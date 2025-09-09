@@ -5,7 +5,12 @@ namespace InMemoryRepositories;
 
 public class UserInMemoryRepository : IUserRepository{
     private List<User> users;
-
+    
+    public UserInMemoryRepository(){
+        users = new List<User>();
+        AddDummyData();
+    }
+    
     public Task<User> AddAsync(User user){
         user.Id = users.Any()
             ? users.Max(u => u.Id) + 1

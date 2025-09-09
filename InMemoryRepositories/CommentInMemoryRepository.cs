@@ -6,6 +6,11 @@ namespace InMemoryRepositories;
 public class CommentInMemoryRepository : ICommentRepository{
     private List<Comment> comments;
 
+    public CommentInMemoryRepository(){
+        comments = new List<Comment>();
+        AddDummyData();
+    }
+
     public Task<Comment> AddAsync(Comment comment){
         comment.Id = comments.Any()
             ? comments.Max(u => u.Id) + 1
