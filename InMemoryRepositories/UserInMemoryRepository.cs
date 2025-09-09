@@ -48,4 +48,10 @@ public class UserInMemoryRepository : IUserRepository{
         }
         return user;
     }
+
+    public void AddDummyData(){
+        AddAsync(new User("FPC", "FPCpass"));
+        AddAsync(new User("VIA", "VIApass"));
+        AddAsync(new User("admin", "password"));
+    }
 }

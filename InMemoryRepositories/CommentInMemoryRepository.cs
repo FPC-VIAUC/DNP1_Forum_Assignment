@@ -48,4 +48,9 @@ public class CommentInMemoryRepository : ICommentRepository{
         }
         return comment;
     }
+
+    public void AddDummyData(){
+        AddAsync(new Comment("Hello to you too!", 1, 3));
+        AddAsync(new Comment("Thank you!", 2, 3));
+    }
 }

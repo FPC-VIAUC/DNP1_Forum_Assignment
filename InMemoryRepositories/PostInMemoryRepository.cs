@@ -48,4 +48,9 @@ public class PostInMemoryRepository : IPostRepository{
         }
         return post;
     }
+
+    public void AddDummyData(){
+        AddAsync(new Post("Hello!", "Hello World!", 1));
+        AddAsync(new Post("Wow!", "What an interesting application!", 2));
+    }
 }
