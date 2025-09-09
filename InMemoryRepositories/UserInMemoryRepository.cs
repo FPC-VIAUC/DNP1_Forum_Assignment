@@ -8,7 +8,7 @@ public class UserInMemoryRepository : IUserRepository{
 
     public Task<User> AddAsync(User user){
         user.Id = users.Any()
-            ? users.Max(p => p.Id) + 1
+            ? users.Max(u => u.Id) + 1
             : 1;
         users.Add(user);
         return Task.FromResult(user);
@@ -41,7 +41,7 @@ public class UserInMemoryRepository : IUserRepository{
     }
 
     private User getUser(int id){
-        User? user = users.SingleOrDefault(p => p.Id == id);
+        User? user = users.SingleOrDefault(u => u.Id == id);
         if (user is null){
             throw new InvalidOperationException(
                 $"User with ID '{id}' not found");
