@@ -2,13 +2,13 @@
 
 namespace CLI.UI.ManageUsers;
 
-public class ManageUserView{
+public class ManageUsersView{
     private CreateUserView createUserView;
-    private ListUserView listUserView;
+    private ListUsersView listUsersView;
 
-    public ManageUserView(IUserRepository userRepository){
+    public ManageUsersView(IUserRepository userRepository){
         createUserView = new CreateUserView(userRepository);
-        listUserView = new ListUserView(userRepository);
+        listUsersView = new ListUsersView(userRepository);
     }
 
     public async Task ManageUsersAsync(){
@@ -19,12 +19,13 @@ public class ManageUserView{
                 "List all users"
             ]);
 
+            Console.WriteLine();
             switch (choice){
                 case 1:
                     await createUserView.CreateUserAsync();
                     break;
                 case 2:
-                    listUserView.ListUsers();
+                    listUsersView.ListUsers();
                     break;
             }
         }
