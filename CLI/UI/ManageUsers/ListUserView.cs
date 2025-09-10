@@ -14,7 +14,7 @@ public class ListUserView{
         IQueryable<User> users = userRepository.GetMany();
         Console.WriteLine($"{users.Count()} users:");
         foreach (User user in userRepository.GetMany()){
-            Console.WriteLine($"  {user.Username}");
+            Console.WriteLine($"> {user.Username}");
         }
     }
 }

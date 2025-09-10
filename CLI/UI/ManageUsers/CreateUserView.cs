@@ -11,22 +11,11 @@ public class CreateUserView{
     }
 
     public async Task<User> CreateUserAsync(){
-        string? username = null;
-        while (username == null){
-            Console.Write("Type username: ");
-            username = Console.ReadLine();
-            if (username == null){
-                Console.WriteLine("Try again.");
-            }
-        }
-        string? password = null;
-        while (password == null){
-            Console.Write("Type password: ");
-            password = Console.ReadLine();
-            if (password == null){
-                Console.WriteLine("Try again.");
-            }
-        }
+        Console.Write("Type username: ");
+        string username = await MyCliUtils.ReadStringAsync();
+        Console.Write("Type password: ");
+        string password = await MyCliUtils.ReadStringAsync();
+        
         return await userRepository.AddAsync(new User(username, password));
     }
 }
