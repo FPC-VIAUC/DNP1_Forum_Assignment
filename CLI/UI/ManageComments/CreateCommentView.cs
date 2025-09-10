@@ -11,12 +11,9 @@ public class CreateCommentView{
     }
 
     public async Task<Comment> CreateCommentAsync(){
-        Console.Write("Type comment: ");
-        string commentBody = await MyCliUtils.ReadStringAsync();
-        Console.Write("Type post ID: ");
-        int postId = await MyCliUtils.ReadIntAsync();
-        Console.Write("Type user ID: ");
-        int userId = await MyCliUtils.ReadIntAsync();
+        string commentBody = await MyCliUtils.ReadStringAsync("Type comment: ");
+        int postId = await MyCliUtils.ReadIntAsync("Type post ID: ");
+        int userId = await MyCliUtils.ReadIntAsync("Type user ID: ");
         
         // TODO: Check if user and post ID exists. I assume this is done with "foreign keys" later, I feel as though it should not be handled in UI...
         

@@ -11,12 +11,9 @@ public class CreatePostView{
     }
 
     public async Task<Post> CreatePostAsync(){
-        Console.Write("Type title: ");
-        string title = await MyCliUtils.ReadStringAsync();
-        Console.Write("Type body: ");
-        string body = await MyCliUtils.ReadStringAsync();
-        Console.Write("Type user ID: ");
-        int id = await MyCliUtils.ReadIntAsync();
+        string title = await MyCliUtils.ReadStringAsync("Type title: ");
+        string body = await MyCliUtils.ReadStringAsync("Type body: ");
+        int id = await MyCliUtils.ReadIntAsync("Type user ID: ");
         
         return await postRepository.AddAsync(new Post(title, body, id));
     }

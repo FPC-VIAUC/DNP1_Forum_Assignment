@@ -13,9 +13,15 @@ public class ViewPostView{
     }
 
     public async Task ViewPostAsync(){
-        Console.Write("Type post ID: ");
-        int postId = await MyCliUtils.ReadIntAsync();
-        Post post = await postRepository.GetSingleAsync(postId);
+        int postId = await MyCliUtils.ReadIntAsync("Type post ID: ");
+        Post post;
+        try{
+            post = await postRepository.GetSingleAsync(postId);
+        } catch (InvalidOperationException e){
+            Console.WriteLine(e.Message);
+            Console.ReadLine();
+            return;
+        }
         List<Comment> comments = commentRepository.GetMany().Where(c => c.PostId == postId).ToList();
 
         Console.WriteLine();

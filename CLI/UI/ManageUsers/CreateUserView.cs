@@ -11,10 +11,8 @@ public class CreateUserView{
     }
 
     public async Task<User> CreateUserAsync(){
-        Console.Write("Type username: ");
-        string username = await MyCliUtils.ReadStringAsync();
-        Console.Write("Type password: ");
-        string password = await MyCliUtils.ReadStringAsync();
+        string username = await MyCliUtils.ReadStringAsync("Type username: ");
+        string password = await MyCliUtils.ReadStringAsync("Type password: ");
         
         return await userRepository.AddAsync(new User(username, password));
     }
