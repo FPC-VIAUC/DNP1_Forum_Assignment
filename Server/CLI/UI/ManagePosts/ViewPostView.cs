@@ -3,7 +3,7 @@ using Entities;
 
 namespace CLI.UI.ManagePosts;
 
-public class ViewPostView{
+public class ViewPostView : ConsoleView{
     private IPostRepository postRepository;
     private ICommentRepository commentRepository;
 
@@ -12,8 +12,8 @@ public class ViewPostView{
         this.commentRepository = commentRepository;
     }
 
-    public async Task ViewPostAsync(){
-        int postId = await MyCliUtils.ReadIntAsync("Type post ID: ");
+    public override async Task ShowViewAsync(){
+        int postId = await ReadIntAsync("Type post ID: ");
         Post post;
         try{
             post = await postRepository.GetSingleAsync(postId);

@@ -1,28 +1,8 @@
 ﻿namespace CLI.UI;
 
-public static class MyCliUtils{
-    // 0 always means return
-    public static async Task<int> GetChoiceAsync(List<string> choices, int? defaultChoice){
-        choices.Insert(0, "Return");
-        for(int i = 0; i < choices.Count; i++){
-            Console.WriteLine($"{i}{(defaultChoice != null ? (i == defaultChoice ? "*" : "") : "")}) {choices[i]}");
-        }
-        
-        int choice = -1;
-        while (choice < 0 || choice >= choices.Count){
-            choice = await ReadIntAsync("Choice: ", defaultChoice);
-            if (choice < 0 || choice >= choices.Count){
-                Console.WriteLine("Not a valid choice, try again...");
-            }
-        }
-        
-        return choice;
-    }
-
-    public static async Task<int> GetChoiceAsync(List<string> choices){
-        return await GetChoiceAsync(choices, 0);
-    }
-
+public abstract class ConsoleView{
+    public abstract Task ShowViewAsync();
+    
     public static async Task<int> ReadIntAsync(string? hint, int? defaultChoice){
         int? num = null;
         while(num == null){

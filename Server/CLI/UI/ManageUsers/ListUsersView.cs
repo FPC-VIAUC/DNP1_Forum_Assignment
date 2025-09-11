@@ -3,14 +3,14 @@ using Entities;
 
 namespace CLI.UI.ManageUsers;
 
-public class ListUsersView{
+public class ListUsersView : ConsoleView{
     private IUserRepository userRepository;
 
     public ListUsersView(IUserRepository userRepository){
         this.userRepository = userRepository;
     }
 
-    public void ListUsers(){
+    public override async Task ShowViewAsync(){
         IQueryable<User> users = userRepository.GetMany();
         Console.WriteLine($"{users.Count()} users:");
         foreach (User user in userRepository.GetMany()){

@@ -21,27 +21,11 @@ public class CliApp{
         ManageUsersView manageUsersView = new ManageUsersView(userRepository);
         ManagePostsView managePostsView = new ManagePostsView(postRepository, commentRepository);
         ManageCommentsView manageCommentsView = new ManageCommentsView(commentRepository);
-        
-        int choice = -1;
-        while (choice != 0){
-            choice = await MyCliUtils.GetChoiceAsync([
-                "Users", 
-                "Posts",
-                "Comments"
-            ]);
 
-            Console.WriteLine();
-            switch (choice){
-                case 1:
-                    await manageUsersView.ManageUsersAsync();
-                    break;
-                case 2:
-                    await managePostsView.ManagePostsAsync();
-                    break;
-                case 3:
-                    await manageCommentsView.ManageCommentsAsync();
-                    break;
-            }
-        }
+        await new ConsoleMenu([
+            new ConsoleMenuItem("Users",manageUsersView),
+            new ConsoleMenuItem("Posts",managePostsView),
+            new ConsoleMenuItem("Comments",manageCommentsView)
+        ]).ShowViewAsync();
     }
 }

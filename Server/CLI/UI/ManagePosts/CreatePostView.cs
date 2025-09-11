@@ -3,18 +3,18 @@ using Entities;
 
 namespace CLI.UI.ManagePosts;
 
-public class CreatePostView{
+public class CreatePostView : ConsoleView{
     private IPostRepository postRepository;
 
     public CreatePostView(IPostRepository postRepository){
         this.postRepository = postRepository;
     }
 
-    public async Task<Post> CreatePostAsync(){
-        string title = await MyCliUtils.ReadStringAsync("Type title: ");
-        string body = await MyCliUtils.ReadStringAsync("Type body: ");
-        int id = await MyCliUtils.ReadIntAsync("Type user ID: ");
+    public override async Task ShowViewAsync(){
+        string title = await ReadStringAsync("Type title: ");
+        string body = await ReadStringAsync("Type body: ");
+        int id = await ReadIntAsync("Type user ID: ");
         
-        return await postRepository.AddAsync(new Post(title, body, id));
+        await postRepository.AddAsync(new Post(title, body, id));
     }
 }
