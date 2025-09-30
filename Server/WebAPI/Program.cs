@@ -1,10 +1,16 @@
+using FileRepositories;
+using RepositoryContracts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Add Repositories to the services
+builder.Services.AddScoped<IUserRepository, UserFileRepository>();
+builder.Services.AddScoped<IPostRepository, PostFileRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentFileRepository>();
 
 var app = builder.Build();
 
@@ -14,9 +20,7 @@ if (app.Environment.IsDevelopment()){
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
