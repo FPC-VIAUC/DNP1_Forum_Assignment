@@ -1,3 +1,4 @@
+using BusinessLogic;
 using FileRepositories;
 using RepositoryContracts;
 using WebAPI;
@@ -10,7 +11,9 @@ builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>(); // Add middle
 builder.Services.AddOpenApi();
 
 // Add Repositories to the services.
+builder.Services.AddScoped<UsersService, UsersService>();
 builder.Services.AddScoped<IUserRepository, UserFileRepository>();
+
 builder.Services.AddScoped<IPostRepository, PostFileRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentFileRepository>();
 
@@ -22,6 +25,7 @@ if (app.Environment.IsDevelopment()){
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 
