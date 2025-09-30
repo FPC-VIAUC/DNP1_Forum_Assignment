@@ -6,9 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\CustomExceptions\CustomExceptions.csproj" />
-      <ProjectReference Include="..\RepositoryContracts\RepositoryContracts.csproj" />
-    </ItemGroup>
-
 </Project>

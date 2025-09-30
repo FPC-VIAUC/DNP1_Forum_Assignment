@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using CustomExceptions;
 using Entities;
 using RepositoryContracts;
 
@@ -70,7 +71,7 @@ public class UserFileRepository : IUserRepository{
     private User getUser(List<User> users, int id){
         User? user = users.SingleOrDefault(u => u.Id == id);
         if (user is null){
-            throw new InvalidOperationException(
+            throw new NotFoundException(
                 $"User with ID '{id}' not found");
         }
         return user;

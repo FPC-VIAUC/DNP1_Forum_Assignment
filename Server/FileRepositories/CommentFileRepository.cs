@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using CustomExceptions;
 using Entities;
 using RepositoryContracts;
 
@@ -70,7 +71,7 @@ public class CommentFileRepository : ICommentRepository{
     private Comment getComment(List<Comment> comments, int id){
         Comment? comment = comments.SingleOrDefault(c => c.Id == id);
         if (comment is null){
-            throw new InvalidOperationException(
+            throw new NotFoundException(
                 $"Comment with ID '{id}' not found");
         }
         return comment;

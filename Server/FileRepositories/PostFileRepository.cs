@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using CustomExceptions;
 using Entities;
 using RepositoryContracts;
 
@@ -70,7 +71,7 @@ public class PostFileRepository : IPostRepository{
     private Post getPost(List<Post> posts, int id){
         Post? post = posts.SingleOrDefault(p => p.Id == id);
         if (post is null){
-            throw new InvalidOperationException(
+            throw new NotFoundException(
                 $"Post with ID '{id}' not found");
         }
         return post;
