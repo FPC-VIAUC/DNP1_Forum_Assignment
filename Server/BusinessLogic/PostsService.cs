@@ -27,10 +27,9 @@ public class PostsService{
     }
 
     public async Task UpdateAsync(Post post){
-        Post currentPost = await postRepository.GetSingleAsync(post.Id);
         if (post.Title.Length == 0) throw new ArgumentException("The title of a post cannot be empty.");
-        //if (currentPost.UserId != post.UserId) throw new ArgumentException("You cannot update the user who posted the post.");
-        post.UserId = currentPost.UserId;
+        Post currentPost = await postRepository.GetSingleAsync(post.Id);
+        post.UserId = currentPost.UserId; //if (currentPost.UserId != post.UserId) throw new ArgumentException("You cannot update the user who posted the post.");
         await postRepository.UpdateAsync(post);
     }
 
