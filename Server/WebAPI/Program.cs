@@ -14,7 +14,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<UsersService, UsersService>();
 builder.Services.AddScoped<IUserRepository, UserFileRepository>();
 
+builder.Services.AddScoped<PostsService, PostsService>();
 builder.Services.AddScoped<IPostRepository, PostFileRepository>();
+
+builder.Services.AddScoped<CommentsService, CommentsService>();
 builder.Services.AddScoped<ICommentRepository, CommentFileRepository>();
 
 var app = builder.Build();
