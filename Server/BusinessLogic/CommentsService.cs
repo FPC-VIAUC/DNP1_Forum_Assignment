@@ -24,8 +24,8 @@ public class CommentsService{
     
     public async Task<Comment> AddAsync(Comment comment){
         // Throws exception if ID does not exist.
-        userRepository.GetSingleAsync(comment.UserId); 
-        postRepository.GetSingleAsync(comment.PostId);
+        await userRepository.GetSingleAsync(comment.UserId); 
+        await postRepository.GetSingleAsync(comment.PostId);
 
         if (comment.Body.Length == 0) throw new ArgumentException("Body of a comment cannot be empty.");
         
