@@ -5,9 +5,13 @@ namespace BusinessLogic;
 
 public class UsersService{
     private readonly IUserRepository userRepository;
+    private readonly IPostRepository postRepository;
+    private readonly ICommentRepository commentRepository;
 
-    public UsersService(IUserRepository userRepository){
+    public UsersService(IUserRepository userRepository, IPostRepository postRepository, ICommentRepository commentRepository){
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
     }
 
     public IQueryable<User> GetMany(){
@@ -32,5 +36,9 @@ public class UsersService{
 
     public async Task DeleteAsync(int id){
         await userRepository.DeleteAsync(id);
+        postRepository.GetMany().Where(p => p.UserId == id).ToList().
+            ForEach(p => postRepository.DeleteAsync(p.Id));
+        commentRepository.GetMany().Where(c => c.UserId == id).ToList().
+            ForEach(c => commentRepository.DeleteAsync(c.Id));
     }
 }
