@@ -25,13 +25,13 @@ public class CommentsController : ControllerBase{
         if (user != null){
             int id = 0;
             if (int.TryParse(user, out id)){
-                comments = comments.Where(p => p.UserId == id);
+                comments = comments.Where(c => c.UserId == id);
             } else {
-                comments = comments.Where(p => usersService.GetSingleAsync(p.UserId).Result.
+                comments = comments.Where(c => usersService.GetSingleAsync(c.UserId).Result.
                     Username.ToLower().Contains(user.ToLower())) ;
             }
         }
-        IQueryable<CommentDTO> commentDTOs = comments.Select(u => CreateCommentDTOFromComment(u));
+        IQueryable<CommentDTO> commentDTOs = comments.Select(c => CreateCommentDTOFromComment(c));
         return Ok(commentDTOs);
     }
 
