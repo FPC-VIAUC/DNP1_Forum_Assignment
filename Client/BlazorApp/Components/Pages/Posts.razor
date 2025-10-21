@@ -6,13 +6,15 @@
 @inject IPostsService PostService
 @inject IUserService UsersService
 
+<PageTitle>Posts</PageTitle>
+
 <h3>Posts</h3>
 
 <div class="mt-4">
     <button class="btn btn-primary" @onclick="@(() => navMngr.NavigateTo("/createpost"))">Create post</button>
 </div>
 
-<QuickGrid Items="PostsList">
+<QuickGrid Class="mt-4" Items="PostsList">
     <PropertyColumn Property="@(p => p.Title)" />
     <PropertyColumn Title="Author" Property="@(p => GetUsername(p.UserId))" />
     <TemplateColumn>
