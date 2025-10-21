@@ -1,0 +1,31 @@
+﻿@page "/posts"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using ApiContracts
+@using BlazorApp.Services
+@inject NavigationManager navMngr
+@inject IPostsService PostService
+
+<h3>Posts</h3>
+
+<div class="mt-4">
+    <button class="btn btn-primary" @onclick="@(() => navMngr.NavigateTo("/createpost"))">Create post</button>
+</div>
+
+<QuickGrid Items="PostsList">
+    <PropertyColumn Property="@(p => p.Title)" />
+    <TemplateColumn>
+       <button class="btn btn-primary" @onclick="@(() => navMngr.NavigateTo($"/posts/{context.Id}"))">Details</button>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    public IQueryable<PostDTO> PostsList{ get; set; }
+    
+    protected override void OnInitialized(){
+        PostsList = PostService.GetManyPosts();
+    }
+
+    public void ViewDetails(PostDTO post){
+        
+    }
+}

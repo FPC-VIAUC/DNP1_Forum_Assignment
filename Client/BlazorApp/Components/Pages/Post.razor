@@ -1,0 +1,20 @@
+﻿@page "/posts/{id:int}"
+@using ApiContracts
+@using BlazorApp.Services
+@inject IPostsService PostsService
+
+<h3>@Title</h3>
+<p>@Body</p>
+
+@code {
+    [Parameter]
+    public int Id{ get; set; }
+    public string Title{ get; set; }
+    public string Body{ get; set; }
+
+    protected override async Task OnParametersSetAsync(){
+        PostDTO post = await PostsService.GetSinglePostAsync(Id);
+        Title = post.Title;
+        Body = post.Body;
+    }
+}

@@ -1,0 +1,36 @@
+﻿@page "/createpost"
+@using ApiContracts
+@using BlazorApp.Services
+@inject IPostsService PostsService
+@inject NavigationManager NavigationManager
+
+<h3>Create a post</h3>
+
+<div class="mt-4">
+    Title: 
+    <input @bind="Title"/>
+</div>
+
+<div class="mt-4">
+    Content: 
+    <textarea @bind="Body"></textarea>
+</div>
+
+<div class="mt-4">
+    <button class="btn btn-primary" @onclick="OnSubmit">Submit</button>
+</div>
+
+@code {
+    public string Title{ get; set; }
+    public string Body{ get; set; }
+
+    private async void OnSubmit(){
+        PostDTO postDto = new PostDTO(){
+            Title = this.Title,
+            Body = this.Body,
+            UserId = 1 // TODO: use the user that is logged in, once I add logins
+        };
+        PostDTO post = await PostsService.AddPostAsync(postDto);
+        NavigationManager.NavigateTo($"/posts/{post.Id}");
+    }
+}

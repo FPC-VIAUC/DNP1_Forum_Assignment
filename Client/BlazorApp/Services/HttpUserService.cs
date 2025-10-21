@@ -17,10 +17,10 @@ public class HttpUserService : IUserService{
             throw new Exception(response);
         }
 
-        return JsonSerializer.Deserialize<IQueryable<UserDTO>>(
+        return JsonSerializer.Deserialize<List<UserDTO>>(
             response, 
             new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true }
-        )!;
+        )!.AsQueryable();
     }
 
     public async Task<UserDTO> GetSingleUserAsync(int id){
