@@ -4,7 +4,7 @@
 @using BlazorApp.Services
 @inject NavigationManager navMngr
 @inject IPostsService PostService
-@inject IUserService UserService
+@inject IUserService UsersService
 
 <h3>Posts</h3>
 
@@ -14,7 +14,7 @@
 
 <QuickGrid Items="PostsList">
     <PropertyColumn Property="@(p => p.Title)" />
-    <PropertyColumn Title="Author" Property="@(p => GetUsername(p))" />
+    <PropertyColumn Title="Author" Property="@(p => GetUsername(p.UserId))" />
     <TemplateColumn>
        <button class="btn btn-primary" @onclick="@(() => navMngr.NavigateTo($"/posts/{context.Id}"))">Details</button>
     </TemplateColumn>
@@ -27,9 +27,9 @@
         PostsList = PostService.GetManyPosts();
     }
 
-    public string GetUsername(PostDTO post){
+    public string GetUsername(int userId){
         // This hangs unless you wrap it in Task.run()... idk why
-        UserDTO user = Task.Run(() => UserService.GetSingleUserAsync(post.UserId)).Result;
+        UserDTO user = Task.Run(() => UsersService.GetSingleUserAsync(userId)).Result;
         return user.Username;
     }
 

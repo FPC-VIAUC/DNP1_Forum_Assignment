@@ -3,11 +3,23 @@
 @using BlazorApp.Services
 @inject IPostsService PostsService
 @inject IUserService UsersService
+@inject ICommentsService CommentsService
+@inject NavigationManager NavigationManager
 
 <h3>@Title</h3>
 <i>Written by: @Author</i>
+
 <hr/>
 <p>@Body</p>
+<hr/>
+
+<h4>Comments</h4>
+<input @bind="Comment"/>
+<button class="btn btn-primary" @onclick="CreateComment">Post comment</button>
+
+@foreach(CommentDTO comment in CommentsService.GetCommentsFromPost(Id)){
+    <p class="mt-4"><b>@GetUsername(comment.UserId):</b> @comment.Body</p>
+}
 
 @code {
     [Parameter]
@@ -15,11 +27,28 @@
     public string Title{ get; set; }
     public string Author{ get; set; }
     public string Body{ get; set; }
+    
+    public string Comment{ get; set; }
 
     protected override async Task OnParametersSetAsync(){
         PostDTO post = await PostsService.GetSinglePostAsync(Id);
         Title = post.Title;
-        Author = Task.Run(() => UsersService.GetSingleUserAsync(post.UserId)).Result.Username;
+        Author = GetUsername(post.UserId);
         Body = post.Body;
+    }
+
+    private void CreateComment(){
+        CommentsService.AddCommentAsync(new CommentDTO(){
+            Body = Comment,
+            PostId = Id,
+            UserId = 1 // TODO: use the user that is logged in, once I add logins
+        });
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+    
+    public string GetUsername(int userId){
+        // This hangs unless you wrap it in Task.run()... idk why
+        UserDTO user = Task.Run(() => UsersService.GetSingleUserAsync(userId)).Result;
+        return user.Username;
     }
 }

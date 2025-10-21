@@ -13,6 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient{
 
 builder.Services.AddScoped<IUserService, HttpUserService>();
 builder.Services.AddScoped<IPostsService, HttpPostsService>();
+builder.Services.AddScoped<ICommentsService, HttpCommentsService>();
 
 var app = builder.Build();
 
