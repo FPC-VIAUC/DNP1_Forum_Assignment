@@ -1,0 +1,33 @@
+﻿@page "/AddUser"
+@using ApiContracts
+@using BlazorApp.Services
+@inject IUserService UserService
+
+<h3>Add a user</h3>
+
+<div class="mt-4">
+    Username: 
+    <input @bind="Username"/>
+</div>
+
+<div class="mt-4">
+    Password: 
+    <input @bind="Password"/>
+</div>
+
+<div class="mt-4">
+    <button class="btn btn-primary" @onclick="OnSubmit">Submit</button>
+</div>
+
+@code {
+    public string Username{ get; set; }
+    public string Password{ get; set; }
+    
+    public void OnSubmit(){
+        CreateUserDTO createUserDto = new CreateUserDTO(){
+            Username = this.Username,
+            Password = this.Password
+        };
+        UserService.AddUserAsync(createUserDto);
+    }
+}
