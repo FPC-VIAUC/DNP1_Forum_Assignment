@@ -2,23 +2,23 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using ApiContracts
 @using BlazorApp.Services
-@inject NavigationManager navMngr
+@inject NavigationManager NavigationManager
 @inject IPostsService PostService
-@inject IUserService UsersService
+@inject IUsersService UsersesService
 
 <PageTitle>Posts</PageTitle>
 
 <h3>Posts</h3>
 
 <div class="mt-4">
-    <button class="btn btn-primary" @onclick="@(() => navMngr.NavigateTo("/createpost"))">Create post</button>
+    <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo("/createpost"))">Create post</button>
 </div>
 
 <QuickGrid Class="mt-4" Items="PostsList">
     <PropertyColumn Property="@(p => p.Title)" />
     <PropertyColumn Title="Author" Property="@(p => GetUsername(p.UserId))" />
     <TemplateColumn>
-       <button class="btn btn-primary" @onclick="@(() => navMngr.NavigateTo($"/posts/{context.Id}"))">Details</button>
+       <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/posts/{context.Id}"))">Details</button>
     </TemplateColumn>
 </QuickGrid>
 
@@ -31,7 +31,7 @@
 
     public string GetUsername(int userId){
         // This hangs unless you wrap it in Task.run()... idk why
-        UserDTO user = Task.Run(() => UsersService.GetSingleUserAsync(userId)).Result;
+        UserDTO user = Task.Run(() => UsersesService.GetSingleUserAsync(userId)).Result;
         return user.Username;
     }
 

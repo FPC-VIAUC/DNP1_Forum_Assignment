@@ -2,7 +2,7 @@
 @using ApiContracts
 @using BlazorApp.Services
 @inject IPostsService PostsService
-@inject IUserService UsersService
+@inject IUsersService UsersesService
 @inject ICommentsService CommentsService
 @inject NavigationManager NavigationManager
 
@@ -50,7 +50,7 @@
     
     public string GetUsername(int userId){
         // This hangs unless you wrap it in Task.run()... idk why
-        UserDTO user = Task.Run(() => UsersService.GetSingleUserAsync(userId)).Result;
+        UserDTO user = Task.Run(() => UsersesService.GetSingleUserAsync(userId)).Result;
         return user.Username;
     }
 }

@@ -3,14 +3,14 @@ using ApiContracts;
 
 namespace BlazorApp.Services;
 
-public class HttpUserService : IUserService{
+public class HttpUsersService : IUsersService{
     private HttpClient client;
 
-    public HttpUserService(HttpClient client){
+    public HttpUsersService(HttpClient client){
         this.client = client;
     }
     
-    public IQueryable<UserDTO> GetManyUser(){
+    public IQueryable<UserDTO> GetManyUsers(){
         HttpResponseMessage httpResponse = client.GetAsync("users").Result;
         string response = httpResponse.Content.ReadAsStringAsync().Result;
         if (!httpResponse.IsSuccessStatusCode){
