@@ -2,19 +2,24 @@
 @using ApiContracts
 @using BlazorApp.Services
 @inject IPostsService PostsService
+@inject IUserService UsersService
 
 <h3>@Title</h3>
+<i>Written by: @Author</i>
+<hr/>
 <p>@Body</p>
 
 @code {
     [Parameter]
     public int Id{ get; set; }
     public string Title{ get; set; }
+    public string Author{ get; set; }
     public string Body{ get; set; }
 
     protected override async Task OnParametersSetAsync(){
         PostDTO post = await PostsService.GetSinglePostAsync(Id);
         Title = post.Title;
+        Author = Task.Run(() => UsersService.GetSingleUserAsync(post.UserId)).Result.Username;
         Body = post.Body;
     }
 }
