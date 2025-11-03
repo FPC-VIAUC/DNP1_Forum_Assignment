@@ -1,5 +1,7 @@
+using BlazorApp.Auth;
 using BlazorApp.Components;
 using BlazorApp.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddScoped(sp => new HttpClient{
 builder.Services.AddScoped<IUsersService, HttpUsersService>();
 builder.Services.AddScoped<IPostsService, HttpPostsService>();
 builder.Services.AddScoped<ICommentsService, HttpCommentsService>();
+builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
 
 var app = builder.Build();
 
