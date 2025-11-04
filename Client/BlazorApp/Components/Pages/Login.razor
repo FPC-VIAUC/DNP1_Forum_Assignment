@@ -20,9 +20,15 @@
         }
         
         <button @onclick="LoginAsync">Login</button>
+        
+        <p>
+            <NavLink href="/signup">Sign up</NavLink> if you don't have a login.
+        </p>
     </NotAuthorized>
     <Authorized>
         <h3>Hello, @context.User.Identity.Name</h3>
+        
+        <button @onclick="Logout">Logout</button>
     </Authorized>
 </AuthorizeView>
 
@@ -36,6 +42,15 @@
         try{
             await GetSimpleAuthProvider().LoginAsync(username, password);
             NavigationManager.NavigateTo("/");
+        } catch (Exception e){
+            errorLabel = $"Error: {e.Message}";
+        }
+    }
+
+    private void Logout(){
+        errorLabel = "";
+        try{
+            GetSimpleAuthProvider().Logout();
         } catch (Exception e){
             errorLabel = $"Error: {e.Message}";
         }

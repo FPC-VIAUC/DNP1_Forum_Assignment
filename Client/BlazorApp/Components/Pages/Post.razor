@@ -1,8 +1,9 @@
 ﻿@page "/posts/{id:int}"
+@using System.Security.Claims
 @using ApiContracts
 @using BlazorApp.Services
 @inject IPostsService PostsService
-@inject IUsersService UsersesService
+@inject IUsersService UsersService
 @inject ICommentsService CommentsService
 @inject NavigationManager NavigationManager
 
@@ -16,41 +17,62 @@
 <hr/>
 
 <h4>Comments</h4>
-<input @bind="Comment"/>
-<button class="btn btn-primary" @onclick="CreateComment">Post comment</button>
+<AuthorizeView>
+    <Authorized>
+        <input @bind="Comment"/>
+        <button class="btn btn-primary" @onclick="CreateComment">Post comment</button>
+    </Authorized>
+</AuthorizeView>
 
 @foreach(CommentDTO comment in CommentsService.GetCommentsFromPost(Id)){
     <p class="mt-4"><b>@GetUsername(comment.UserId):</b> @comment.Body</p>
 }
 
 @code {
+    public string Comment{ get; set; }
+    
     [Parameter]
     public int Id{ get; set; }
     public string Title{ get; set; }
     public string Author{ get; set; }
     public string Body{ get; set; }
-    
-    public string Comment{ get; set; }
-
     protected override async Task OnParametersSetAsync(){
         PostDTO post = await PostsService.GetSinglePostAsync(Id);
         Title = post.Title;
         Author = GetUsername(post.UserId);
         Body = post.Body;
     }
+    
+    [CascadingParameter] public Task<AuthenticationState> State{ get; set; }
+    private bool isLoggedIn;
+    private int userId;
+    protected override async Task OnInitializedAsync(){
+        AuthenticationState authenticationState = await State;
+        ClaimsPrincipal claimsPrincipal = authenticationState.User;
+        if (claimsPrincipal.Identity == null || !claimsPrincipal.Identity.IsAuthenticated){
+            isLoggedIn = false;
+        } else{
+            isLoggedIn = true;
+            IEnumerable<Claim> claims = claimsPrincipal.Claims;
+            string userIdString = claims.Single(c => c.Type == "Id").Value;
+            userId = int.Parse(userIdString);
+        }
+    }
 
     private void CreateComment(){
+        if (!isLoggedIn) return;
         CommentsService.AddCommentAsync(new CommentDTO(){
             Body = Comment,
             PostId = Id,
-            UserId = 1 // TODO: use the user that is logged in, once I add logins
+            UserId = userId
         });
+        Comment = "";
         NavigationManager.NavigateTo(NavigationManager.Uri, true);
     }
     
     public string GetUsername(int userId){
         // This hangs unless you wrap it in Task.run()... idk why
-        UserDTO user = Task.Run(() => UsersesService.GetSingleUserAsync(userId)).Result;
+        UserDTO user = Task.Run(() => UsersService.GetSingleUserAsync(userId)).Result;
         return user.Username;
     }
 }

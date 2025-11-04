@@ -4,15 +4,19 @@
 @using BlazorApp.Services
 @inject NavigationManager NavigationManager
 @inject IPostsService PostService
-@inject IUsersService UsersesService
+@inject IUsersService UsersService
 
 <PageTitle>Posts</PageTitle>
 
 <h3>Posts</h3>
 
-<div class="mt-4">
-    <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo("/createpost"))">Create post</button>
-</div>
+<AuthorizeView>
+    <Authorized>
+        <div class="mt-4">
+            <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo("/createpost"))">Create post</button>
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 <QuickGrid Class="mt-4" Items="PostsList">
     <PropertyColumn Property="@(p => p.Title)" />
@@ -31,7 +35,7 @@
 
     public string GetUsername(int userId){
         // This hangs unless you wrap it in Task.run()... idk why
-        UserDTO user = Task.Run(() => UsersesService.GetSingleUserAsync(userId)).Result;
+        UserDTO user = Task.Run(() => UsersService.GetSingleUserAsync(userId)).Result;
         return user.Username;
     }
 

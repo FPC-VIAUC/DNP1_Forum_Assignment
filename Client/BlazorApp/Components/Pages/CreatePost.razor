@@ -1,4 +1,6 @@
 ﻿@page "/createpost"
+@attribute [Authorize]
+@using System.Security.Claims
 @using ApiContracts
 @using BlazorApp.Services
 @inject IPostsService PostsService
@@ -22,17 +24,35 @@
     <button class="btn btn-primary" @onclick="OnSubmit">Submit</button>
 </div>
 
+<p class="text-danger">@ErrorMessage</p>
+
 @code {
+    public string ErrorMessage;
+    
     public string Title{ get; set; }
     public string Body{ get; set; }
 
-    private async void OnSubmit(){
+    [CascadingParameter] public Task<AuthenticationState> State{ get; set; }
+    private int userId;
+    protected override async Task OnInitializedAsync(){
+        AuthenticationState authenticationState = await State;
+        ClaimsPrincipal claimsPrincipal = authenticationState.User;
+        IEnumerable<Claim> claims = claimsPrincipal.Claims;
+        string userIdString = claims.Single(c => c.Type == "Id").Value;
+        userId = int.Parse(userIdString);
+    }
+    
+    private async Task OnSubmit(){
         PostDTO postDto = new PostDTO(){
             Title = this.Title,
             Body = this.Body,
-            UserId = 1 // TODO: use the user that is logged in, once I add logins
+            UserId = userId
         };
-        PostDTO post = await PostsService.AddPostAsync(postDto);
-        NavigationManager.NavigateTo($"/posts/{post.Id}");
+        try{
+            PostDTO post = await PostsService.AddPostAsync(postDto);
+            NavigationManager.NavigateTo($"/posts/{post.Id}");
+        } catch (Exception e){
+            ErrorMessage = e.Message;
+        }
     }
 }
