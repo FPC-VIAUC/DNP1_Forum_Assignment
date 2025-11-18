@@ -11,4 +11,10 @@ public class Comment{
         PostId = postId;
         UserId = userId;
     }
+    
+    // --- EFC START ---
+    private Comment(){}
+    public User User{ get; set; }
+    public Post Post{ get; set; }
+    // --- EFC END ---
 }
