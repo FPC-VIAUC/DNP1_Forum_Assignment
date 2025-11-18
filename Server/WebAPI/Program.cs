@@ -1,4 +1,5 @@
 using BusinessLogic;
+using EfcRepositories;
 using FileRepositories;
 using RepositoryContracts;
 using WebAPI;
@@ -12,13 +13,15 @@ builder.Services.AddOpenApi();
 
 // Add Repositories to the services.
 builder.Services.AddScoped<UsersService, UsersService>();
-builder.Services.AddScoped<IUserRepository, UserFileRepository>();
+builder.Services.AddScoped<IUserRepository, UserEfcRepository>();
 
 builder.Services.AddScoped<PostsService, PostsService>();
-builder.Services.AddScoped<IPostRepository, PostFileRepository>();
+builder.Services.AddScoped<IPostRepository, PostEfcRepository>();
 
 builder.Services.AddScoped<CommentsService, CommentsService>();
-builder.Services.AddScoped<ICommentRepository, CommentFileRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentEfcRepository>();
+
+builder.Services.AddDbContext<ForumContext>();
 
 var app = builder.Build();
 

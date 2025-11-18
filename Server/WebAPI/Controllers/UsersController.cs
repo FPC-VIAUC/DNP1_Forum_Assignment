@@ -16,7 +16,7 @@ public class UsersController : ControllerBase{
 
     [HttpGet(Name = "GetUsers")]
     public ActionResult<IEnumerable<UserDTO>> GetUsers([FromQuery] string? filter){
-        IQueryable<User> users = usersService.GetMany();
+        IQueryable<User> users = usersService.GetMany().ToList().AsQueryable(); // The query must be evaluated otherwise it raises an exception
         if (filter != null) users = users.Where(u => u.Username.ToLower().Contains(filter.ToLower()));
         IQueryable<UserDTO> userDTOs = users.Select(u => CreateUserDTOFromUser(u));
         return Ok(userDTOs);

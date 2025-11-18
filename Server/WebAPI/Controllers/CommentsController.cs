@@ -18,7 +18,7 @@ public class CommentsController : ControllerBase{
     
     [HttpGet(Name = "GetComments")]
     public ActionResult<IEnumerable<CommentDTO>> GetComments([FromQuery] string? user, [FromQuery] int? post){
-        IQueryable<Comment> comments = commentsService.GetMany();
+        IQueryable<Comment> comments = commentsService.GetMany().ToList().AsQueryable(); // The query must be evaluated otherwise it raises an exception
         if (post != null)
             comments = comments.Where(c => c.PostId == post);
             

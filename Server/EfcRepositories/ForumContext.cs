@@ -9,6 +9,6 @@ public class ForumContext : DbContext{
     public DbSet<Comment> Comments{ get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
-        optionsBuilder.UseSqlite("Data Source = forum.db");
+        optionsBuilder.UseSqlite("Data Source = ../EfcRepositories/forum.db");
     }
 }

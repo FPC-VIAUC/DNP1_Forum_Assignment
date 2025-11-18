@@ -18,7 +18,7 @@ public class PostsController : ControllerBase{
 
     [HttpGet(Name = "GetPosts")]
     public ActionResult<IEnumerable<PostDTO>> GetPosts([FromQuery] string? title, [FromQuery] string? user){
-        IQueryable<Post> posts = postsService.GetMany();
+        IQueryable<Post> posts = postsService.GetMany().ToList().AsQueryable(); // The query must be evaluated otherwise it raises an exception
         if (title != null)
             posts = posts.Where(p => p.Title.ToLower().Contains(title.ToLower()));
         
